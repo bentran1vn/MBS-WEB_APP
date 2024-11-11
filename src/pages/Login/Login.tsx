@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Typography } from 'antd'
 import { useContext, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import authApi from 'src/apis/authenticate.api'
 import path from 'src/constant/path'
 import { AppContext } from 'src/context/app.context'
@@ -24,7 +24,7 @@ export interface CustomJwtPayload extends JwtPayload {
 const { Title } = Typography
 
 export default function Login() {
-  const { setIsAuthenticated, setUser, setEmployee } = useContext(AppContext)
+  const { setIsAuthenticated, setUser } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const {

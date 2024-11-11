@@ -1,9 +1,5 @@
 import { Button, DatePicker } from '@nextui-org/react'
 import { Form } from 'src/types/form.type'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import formApi from 'src/apis/form.api'
-import { toast } from 'react-toastify'
-import { useQueryConfig10 } from 'src/hooks/useQueryConfig'
 import Input from 'src/components/Input'
 import { useForm } from 'react-hook-form'
 import { FormSchema, formSchema } from 'src/utils/rules'
@@ -21,8 +17,6 @@ type FormData = Pick<FormSchema, 'response'> & {
 const schema = formSchema.pick(['response'])
 
 export default function ApprovalForm({ form }: { form: Form | undefined }) {
-  const queryConfig = useQueryConfig10()
-  const queryClient = useQueryClient()
   const [isApprove, setIsApprove] = useState<boolean | 'empty'>('empty')
 
   const {
@@ -38,25 +32,12 @@ export default function ApprovalForm({ form }: { form: Form | undefined }) {
     resolver: yupResolver(schema)
   })
 
-  const approveFormMutation = useMutation({
-    mutationFn: formApi.approveForm,
-    onSuccess: () => {
-      toast.success('Submit Form Successfully!', { autoClose: 1000 })
-      queryClient.invalidateQueries({ queryKey: ['formAbsents', queryConfig] })
-      setIsApprove('empty')
-    },
-    onError: (_error) => {
-      toast.error('Submit Form Fail!', { autoClose: 1000 })
-    }
-  })
-
   const onSubmit = (isApprove: boolean) =>
     handleSubmit((data) => {
       setIsApprove(isApprove)
       setValue('isApprove', isApprove)
       setValue('formID', form?.id)
       console.log(data)
-      approveFormMutation.mutate(data as { formID: string; isApprove: boolean; response: string })
     })
 
   return (
@@ -107,7 +88,7 @@ export default function ApprovalForm({ form }: { form: Form | undefined }) {
             type='submit'
             onClick={onSubmit(true)}
             className='bg-gray-400/50 hover:bg-gray-400/30 text-white w-[200px] mr-8 rounded-lg hover:text-gray-600'
-            isLoading={approveFormMutation.isPending && (isApprove as boolean)}
+            isLoading={true}
             disabled={isApprove != 'empty' && !isApprove}
           >
             Submit
@@ -116,7 +97,7 @@ export default function ApprovalForm({ form }: { form: Form | undefined }) {
             type='submit'
             onClick={onSubmit(false)}
             className='bg-gray-400/50 hover:bg-gray-400/30 text-white w-[200px] rounded-lg hover:text-gray-600'
-            isLoading={approveFormMutation.isPending && (!isApprove as boolean)}
+            isLoading={true}
             disabled={isApprove != 'empty' && isApprove}
           >
             Reject

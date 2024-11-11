@@ -1,13 +1,7 @@
 import axios, { AxiosError, type AxiosInstance } from 'axios'
 import { HttpStatusCode } from 'src/constant/httpStatusCode.enum'
 import { AuthResponse } from 'src/types/auth.type'
-import {
-  clearLS,
-  getAccessTokenToLS,
-  getRefreshTokenToLS,
-  saveAccessTokenAndRefreshTokenToLS,
-  setProfileToLS
-} from './auth'
+import { clearLS, getAccessTokenToLS, getRefreshTokenToLS, saveAccessTokenAndRefreshTokenToLS } from './auth'
 import path from 'src/constant/path'
 import config from 'src/constant/config'
 
@@ -45,11 +39,11 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config
-        if (`${url?.split('/')[1]}` === 'login') {
-          this.accessToken = (response.data as AuthResponse).data.accessToken
-          this.refreshToken = (response.data as AuthResponse).data.refreshToken
+        if (`${url?.split('/')[4]}` === 'login') {
+          this.accessToken = (response.data as AuthResponse).value.accessToken
+          this.refreshToken = (response.data as AuthResponse).value.refreshToken
           saveAccessTokenAndRefreshTokenToLS(this.accessToken, this.refreshToken)
-          setProfileToLS((response.data as AuthResponse).data.employeeDto)
+          // setProfileToLS((response.data as AuthResponse).data.employeeDto)
         } else if (url === path.logout) {
           this.accessToken = ''
           this.refreshToken = ''

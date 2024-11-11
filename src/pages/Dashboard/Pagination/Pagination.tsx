@@ -1,15 +1,16 @@
 import classNames from 'classnames'
 import { Link, createSearchParams } from 'react-router-dom'
-import { EmployeeShiftQueryConfig } from 'src/pages/Dashboard/ConfigTable/ConfigTable'
+import {} from 'src/pages/Dashboard/ConfigTable/ConfigTable'
+import { QueryConfig } from 'src/pages/MentorTable/MentorTable'
 
 interface Props {
-  queryConfig: EmployeeShiftQueryConfig
+  queryConfig: QueryConfig
   pageSize: number
   pathName: string
 }
 const RANGE = 2
 export default function Pagination({ queryConfig, pageSize, pathName }: Props) {
-  const page = Number(queryConfig.pageNo)
+  const page = Number(queryConfig.pageIndex)
   const rederPagination = () => {
     let dotAfter = false
     let dotBefore = false

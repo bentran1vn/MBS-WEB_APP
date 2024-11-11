@@ -19,26 +19,11 @@ function RejectedRoute() {
   )
 }
 
-function AdminProtectedRoute() {
-  const { user } = useContext(AppContext)
-  return user?.Role == '1' ? <Outlet /> : <Navigate to='/' />
-}
-
-function ManagerProtectedRoute() {
-  const { user } = useContext(AppContext)
-  return user?.Role == '1' ? <Outlet /> : <Navigate to='/' />
-}
-
-function EmployeeRejectedRoute() {
-  const { user } = useContext(AppContext)
-  return user?.Role == '1' ? <Navigate to='/' /> : <Outlet />
-}
-
 const Login = lazy(() => import('./pages/Login'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const LoginLayout = lazy(() => import('./layouts/LoginLayout'))
 const SideBarLayout = lazy(() => import('src/layouts/SideBarLayout'))
-const EmployeeTable = lazy(() => import('src/pages/EmployeeTable'))
+const MentorTable = lazy(() => import('src/pages/MentorTable'))
 const Dashboard = lazy(() => import('src/pages/Dashboard'))
 const ApproveAbsent = lazy(() => import('src/pages/ApproveAbsent/ApproveAbsent'))
 
@@ -64,7 +49,7 @@ export default function useRouteElements() {
           element: (
             <SideBarLayout>
               <Suspense>
-                <EmployeeTable />
+                <MentorTable />
               </Suspense>
             </SideBarLayout>
           )

@@ -6,55 +6,14 @@ import { Restaurant } from 'src/types/restaurant.type'
 import { handleDate } from 'src/utils/utils'
 import { parseDate } from '@internationalized/date'
 import { Form } from 'src/types/form.type'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import formApi from 'src/apis/form.api'
-import { toast } from 'react-toastify'
-import { useQueryConfig10 } from 'src/hooks/useQueryConfig'
 
 export default function ApprovalForm({ form }: { form: Form | undefined }) {
-  const queryConfig = useQueryConfig10()
-  const queryClient = useQueryClient()
-  const [restaurant, setRestaurant] = useState<Restaurant | undefined>()
+  const [restaurant] = useState<Restaurant | undefined>()
   const [date, setDate] = useState<Date>(new Date())
 
-  const acceptFormMutation = useMutation({
-    mutationFn: formApi.acceptForms,
-    onSuccess: () => {
-      toast('Form Submitted!', { autoClose: 1000 })
-      queryClient.invalidateQueries({ queryKey: ['forms', queryConfig], exact: true })
-    },
-    onError: (_error) => {
-      toast('Error in sending form!', { autoClose: 1000 })
-    }
-  })
-
-  const acceptEmployeeMutation = useMutation({
-    mutationFn: formApi.acceptEmployee,
-    onSuccess: () => {
-      toast('Form Submitted!', { autoClose: 1000 })
-      queryClient.invalidateQueries({ queryKey: ['forms', queryConfig], exact: true })
-    },
-    onError: (_error) => {
-      toast('Error in sending form!', { autoClose: 1000 })
-    }
-  })
-
-  const handleSelection = (select: Restaurant) => {
-    setRestaurant(select)
-  }
-
-  const handleSubmitForm = () => {
-    if (form?.formType == 1) {
-      acceptFormMutation.mutate({
-        formID: form?.id ?? '',
-        restaurantID: restaurant?.id ?? '',
-        date
-      })
-    } else if (form?.formType == 4) {
-      console.log('hâhh')
-      acceptEmployeeMutation.mutate(form.id)
-    }
-  }
+  // const handleSelection = (select: Restaurant) => {
+  //   setRestaurant(select)
+  // }
 
   console.log(form?.formType)
 
@@ -103,7 +62,7 @@ export default function ApprovalForm({ form }: { form: Form | undefined }) {
               </Button>
             </PopoverTrigger>
             <PopoverContent>
-              <InfiniteScroll handleSelection={handleSelection} current={restaurant} />
+              <InfiniteScroll />
             </PopoverContent>
           </Popover>
         </div>
@@ -127,14 +86,10 @@ export default function ApprovalForm({ form }: { form: Form | undefined }) {
       </div>
       <div className=' row-span-1 col-span-5 flex'>
         <Button
-          onClick={handleSubmitForm}
+          onClick={() => {}}
           className='bg-gray-400/50 hover:bg-gray-400/30 text-white w-[200px] mr-8 rounded-lg hover:text-gray-600'
           color='default'
           variant='flat'
-          disabled={
-            (form?.formType == 1 && !restaurant) || acceptFormMutation.isPending || acceptEmployeeMutation.isPending
-          }
-          isLoading={acceptFormMutation.isPending || acceptEmployeeMutation.isPending}
         >
           Submit
         </Button>

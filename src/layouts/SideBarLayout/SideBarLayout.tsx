@@ -1,8 +1,6 @@
 import classNames from 'classnames'
-import { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import path from 'src/constant/path'
-import { AppContext } from 'src/context/app.context'
 import SideBarHeader from 'src/layouts/SideBarLayout/SideBarHeader'
 
 interface Props {
@@ -45,7 +43,7 @@ export default function SideBarLayout({ children }: Props) {
               Dashboard
             </div>
           </Link>
-          {/* <Link to={path.employees}>
+          <Link to={path.employees}>
             <div
               className={classNames(
                 'py-3 px-3 rounded-lg mb-2 font-medium flex items-center transition-background duration-100',
@@ -71,7 +69,7 @@ export default function SideBarLayout({ children }: Props) {
               </svg>
               Mentor
             </div>
-          </Link> */}
+          </Link>
           <Link to={path.approveAbsent}>
             <div
               className={classNames(

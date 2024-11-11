@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { Link, createSearchParams } from 'react-router-dom'
-import { QueryConfig } from 'src/pages/EmployeeTable/EmployeeTable'
+import { QueryConfig } from 'src/pages/MentorTable/MentorTable'
 
 interface Props {
   queryConfig: QueryConfig
@@ -9,7 +9,7 @@ interface Props {
 }
 const RANGE = 2
 export default function Pagination({ queryConfig, pageSize, pathName }: Props) {
-  const page = Number(queryConfig.pageNumber)
+  const page = Number(queryConfig.pageIndex)
   const rederPagination = () => {
     let dotAfter = false
     let dotBefore = false
@@ -39,19 +39,19 @@ export default function Pagination({ queryConfig, pageSize, pathName }: Props) {
     return Array(pageSize)
       .fill(0)
       .map((_, index) => {
-        const pageNumber = index + 1
-        if (page <= RANGE * 2 + 1 && pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+        const pageIndex = index + 1
+        if (page <= RANGE * 2 + 1 && pageIndex > page + RANGE && pageIndex < pageSize - RANGE + 1) {
           //Trường Hợp ... chỉ xuất hiện duy nhất Ở sau
           //Page nó nằm ở khúc đầu
           return renderDotAfter(index)
         } else if (page > RANGE * 2 + 1 && page < pageSize - RANGE * 2) {
           //Page nó nằm ở khúc giữa
-          if (pageNumber < page - RANGE && pageNumber > RANGE) {
+          if (pageIndex < page - RANGE && pageIndex > RANGE) {
             return renderDotBefore(index)
-          } else if (pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+          } else if (pageIndex > page + RANGE && pageIndex < pageSize - RANGE + 1) {
             return renderDotAfter(index)
           }
-        } else if (page >= pageSize - RANGE * 2 && pageNumber > RANGE && pageNumber < page - RANGE) {
+        } else if (page >= pageSize - RANGE * 2 && pageIndex > RANGE && pageIndex < page - RANGE) {
           //Trường Hợp ... chỉ xuất hiện duy nhất Ở đầu
           //Page nó nằm ở khúc cuối
           return renderDotBefore(index)
@@ -62,16 +62,16 @@ export default function Pagination({ queryConfig, pageSize, pathName }: Props) {
               pathname: pathName,
               search: createSearchParams({
                 ...queryConfig,
-                pageNumber: pageNumber.toString()
+                pageIndex: pageIndex.toString()
               }).toString()
             }}
             key={index}
             className={classNames('bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border', {
-              'border-cyan-500': pageNumber === page,
-              'border-transparent': pageNumber !== page
+              'border-cyan-500': pageIndex === page,
+              'border-transparent': pageIndex !== page
             })}
           >
-            {pageNumber}
+            {pageIndex}
           </Link>
         )
       })
@@ -86,7 +86,7 @@ export default function Pagination({ queryConfig, pageSize, pathName }: Props) {
             pathname: pathName,
             search: createSearchParams({
               ...queryConfig,
-              pageNumber: (page - 1).toString()
+              pageIndex: (page - 1).toString()
             }).toString()
           }}
           className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border'
@@ -103,7 +103,7 @@ export default function Pagination({ queryConfig, pageSize, pathName }: Props) {
             pathname: pathName,
             search: createSearchParams({
               ...queryConfig,
-              pageNumber: (page + 1).toString()
+              pageIndex: (page + 1).toString()
             }).toString()
           }}
           className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border'

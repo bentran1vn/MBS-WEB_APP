@@ -1,25 +1,20 @@
-import { useQuery } from '@tanstack/react-query'
-import summaryApi from 'src/apis/summary.api'
+// import { useQuery } from '@tanstack/react-query'
+// import summaryApi from 'src/apis/summary.api'
 import ConfigTableItem from 'src/pages/Dashboard/ConfigTable/ConfigTableItem'
 
-const StatusConfig: Record<string, string> = {
-  '1': 'On Time',
-  '2': 'Late',
-  '3': 'Early Leave'
-}
-
 export default function ConfigTable() {
-  const { data: employeeShiftData, isLoading } = useQuery({
-    queryKey: ['config'],
-    queryFn: () => {
-      return summaryApi.getSummary()
-    },
-    placeholderData: (prevData) => prevData,
-    staleTime: 3 * 60 * 1000
-  })
+  // const { data: employeeShiftData, isLoading } = useQuery({
+  //   queryKey: ['config'],
+  //   queryFn: () => {
+  //     return summaryApi.getSummary()
+  //   },
+  //   placeholderData: (prevData) => prevData,
+  //   staleTime: 3 * 60 * 1000
+  // })
 
   // const employeeShiftList = employeeShiftData?.data.data as EmployeeShiftEventList
 
+  var isLoading = false
   return (
     <div className='h-full'>
       {!isLoading && (
